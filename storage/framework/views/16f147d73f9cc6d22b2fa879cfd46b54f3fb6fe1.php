@@ -1,0 +1,2 @@
+<?php echo $__env->make('Review::frontend.form', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php /**PATH /home/u1568686/public_html/themes/BC/Event/Views/frontend/layouts/details/review.blade.php ENDPATH**/ ?>

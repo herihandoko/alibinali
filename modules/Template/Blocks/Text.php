@@ -13,7 +13,8 @@ class Text extends BaseBlock
         return [
             'settings' => [
                 [
-                    'id'    => 'content',
+//                    'id'    => 'content',
+                    'id'    => 'html',
                     'type'  => 'editor',
                     'label' => __('Editor')
                 ],

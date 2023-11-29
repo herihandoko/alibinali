@@ -2,6 +2,7 @@
 
 namespace Modules\User\Controllers;
 
+use App\Models\BtnTransaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Matrix\Exception;
@@ -246,9 +247,16 @@ class UserController extends FrontendController {
     }
 
     public function virtualAccount(Request $request): View {
+        Artisan::call('btnva:report', [
+            'trxdate' => date('Y-m-d')
+        ]);
         $user = Auth::user();
+        $balance = BtnTransaction::select('amount')->where('va_number', $user->va_number)->sum('amount');
+        $history = BtnTransaction::where('va_number', $user->va_number)->orderBy('payment_date', 'desc')->get();
         $data = [
             'dataUser' => $user,
+            'history' => $history,
+            'balance' => $balance,
             'page_title' => __("Virtual Account"),
             'breadcrumbs' => [
                 [

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 trait ApiTrait
 {
@@ -52,7 +53,7 @@ trait ApiTrait
         curl_close($curl);
         return (string) $response;
     }
-    
+
     public function inquiryVA($param)
     {
         $curl = curl_init();
@@ -84,7 +85,7 @@ trait ApiTrait
         curl_close($curl);
         return (string) $response;
     }
-    
+
     public function deleteVA($param)
     {
         $curl = curl_init();
@@ -116,7 +117,7 @@ trait ApiTrait
         curl_close($curl);
         return (string) $response;
     }
-    
+
     public function reportVA($param)
     {
         $curl = curl_init();
@@ -158,5 +159,27 @@ trait ApiTrait
         openssl_sign($stringToSign, $signature, $private_key, $algo);
         $signature = base64_encode($signature);
         return $signature;
+    }
+
+    public function mokeupReport()
+    {
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://0dbfbbd0784e4fb09e2ccc824b035b76.api.mockbin.io',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Cookie: __cf_bm=H.yR0R42ICEZye1nuNNTmInEXLhDaajv2x3DeBY1DeY-1701271385-0-ATsXgq5c+bUv8KJcWSk+CGuygnpmC+B0CIRXcUb7El6hpboB1vRfw6pUpJ7+ctTZ2D1uUrtTx4PI7jnBF7+XRaU='
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return (string) $response;
     }
 }

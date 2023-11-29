@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GenerateReport;
 use App\Console\Commands\ScanUserPlanExpiredCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        GenerateReport::class
     ];
 
     /**
@@ -27,6 +29,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('btnva:report')->dailyAt('01:00');
         $schedule->command(ScanUserPlanExpiredCommand::class)->daily()->withoutOverlapping();
     }
 

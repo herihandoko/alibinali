@@ -31,6 +31,7 @@ use Modules\User\Models\VendorReferral;
 use \App\Traits\ApiTrait;
 use App\Rules\VirtualAccountRule;
 use App\Rules\HandphoneRule;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends FrontendController {
 

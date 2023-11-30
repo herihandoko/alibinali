@@ -43,50 +43,50 @@ class GenerateReport extends Command
     public function handle()
     {
         $trxDate = $this->argument('trxdate');
-        $response = $this->mokeupReport();
+        // $response = $this->mokeupReport();
         if (!$trxDate)
             $trxDate = date('Y-m-d', strtotime("-1 days"));
 
         /** report va btn */
-        // $partnerServiceId = env('BTN_API_PARTNER_SERVICE_ID');
-        // $xTimeStamp = date('c');
-        // /** begin prepare akses token */
-        // $bodyRequestAT = [
-        //     'grantType' => "client_credentials",
-        //     'additionalInfo' => []
-        // ];
-        // $responseAT = $this->aksesToken([
-        //     'timestamp' => $xTimeStamp,
-        //     'signature' => $this->signatureAccessToken($xTimeStamp),
-        //     'body_request' => $bodyRequestAT
-        // ]);
-        // $responseAccToken = $responseAT->object();
-        // $accessToken = $responseAccToken->accessToken;
-        // /** end prepare akses token */
-        // $jayParsedAry = [
-        //     "partnerServiceId" => $partnerServiceId,
-        //     "startDate" => $trxDate,
-        //     "endDate" => ""
-        // ];
+        $partnerServiceId = env('BTN_API_PARTNER_SERVICE_ID');
+        $xTimeStamp = date('c');
+        /** begin prepare akses token */
+        $bodyRequestAT = [
+            'grantType' => "client_credentials",
+            'additionalInfo' => []
+        ];
+        $responseAT = $this->aksesToken([
+            'timestamp' => $xTimeStamp,
+            'signature' => $this->signatureAccessToken($xTimeStamp),
+            'body_request' => $bodyRequestAT
+        ]);
+        $responseAccToken = $responseAT->object();
+        $accessToken = $responseAccToken->accessToken;
+        /** end prepare akses token */
+        $jayParsedAry = [
+            "partnerServiceId" => $partnerServiceId,
+            "startDate" => $trxDate,
+            "endDate" => ""
+        ];
 
-        // $minifyBody = json_encode($jayParsedAry);
-        // $shaBody = hash('sha256', $minifyBody);
-        // $stringToSign = 'POST' . ":" . "/snap/v1/transfer-va/report" . ":" . $accessToken . ":" . $shaBody . ":" . $xTimeStamp;
-        // $xClientSecret = env('BTN_API_SECRET_KEY');
-        // $signatureVa = hash_hmac(
-        //     'sha512',
-        //     $stringToSign,
-        //     $xClientSecret,
-        //     true
-        // );
+        $minifyBody = json_encode($jayParsedAry);
+        $shaBody = hash('sha256', $minifyBody);
+        $stringToSign = 'POST' . ":" . "/snap/v1/transfer-va/report" . ":" . $accessToken . ":" . $shaBody . ":" . $xTimeStamp;
+        $xClientSecret = env('BTN_API_SECRET_KEY');
+        $signatureVa = hash_hmac(
+            'sha512',
+            $stringToSign,
+            $xClientSecret,
+            true
+        );
 
-        // $va['token'] = $accessToken;
-        // $va['timestamp'] = $xTimeStamp;
-        // $va['signature'] = base64_encode($signatureVa);
-        // $va['external_id'] = strtoupper(Str::random(16));
-        // $va['channel_id'] = substr(str_shuffle("0123456789"), 0, 5);
-        // $va['body_request'] = $jayParsedAry;
-        // $response = $this->reportVA($va);
+        $va['token'] = $accessToken;
+        $va['timestamp'] = $xTimeStamp;
+        $va['signature'] = base64_encode($signatureVa);
+        $va['external_id'] = strtoupper(Str::random(16));
+        $va['channel_id'] = substr(str_shuffle("0123456789"), 0, 5);
+        $va['body_request'] = $jayParsedAry;
+        $response = $this->reportVA($va);
 
         $hasil = json_decode($response, true);
         if (isset($hasil['virtualAccountData'])) {

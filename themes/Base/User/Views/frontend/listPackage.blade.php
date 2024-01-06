@@ -6,7 +6,6 @@
 @include('admin.message')
 <div class="row justify-content-center">
     @foreach($list_paket as $key => $tour)
-    {{-- <?= dd($tour) ?> --}}
     <div class="col-md-12 col-xl-12 mb-2">
         <div class="card shadow-0 border rounded-3">
             <div class="card-body">
@@ -34,10 +33,10 @@
                         </div>
                         <p class="text-truncate mb-4 mb-md-0">
                             <p class="mt-3 mb-1"><i class="simple-icon-plane mr-1"></i>
-                                Dari: <span class="text-primary font-weight-bold ml-1">JAKARTA</span>
+                                Dari: <span class="text-primary font-weight-bold ml-1">{{ $tour->lokasi->name }}</span>
                             </p> 
                                 <p class="mb-3"><i class="simple-icon-calendar mr-1"></i>
-                                Keberangkatan: <span class="text-primary font-weight-bold ml-1">24 Des 2023</span>
+                                Keberangkatan: <span class="text-primary font-weight-bold ml-1">{{ isset($tour->berangkat->start_date)?date('d M Y',strtotime($tour->berangkat->start_date)):"-" }}</span>
                             </p> 
                         </p>
                     </div>

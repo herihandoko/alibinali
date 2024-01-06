@@ -46,7 +46,7 @@
                         </div>
                         <div class="d-flex flex-column mt-4">
                             <a class="btn btn-primary btn-sm" href="{{ url('/tour/'.$tour->slug) }}" target="_blank">Lihat Detail</a>
-                            <button class="btn btn-outline-primary btn-sm mt-2" type="button"> Pesan Sekarang </button>
+                            <button class="btn btn-outline-primary btn-sm mt-2" type="button" disabled> Pesan Sekarang </button>
                         </div>
                     </div>
                 </div>

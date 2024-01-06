@@ -519,9 +519,9 @@ class UserController extends FrontendController {
 //            }
 //        }
 
-        if (!$this->hasPermission('tour_manage_others')) {
-            $q->where('author_id', $this->currentUser()->id);
-        }
+        // if (!$this->hasPermission('tour_manage_others')) {
+        //     $q->where('author_id', $this->currentUser()->id);
+        // }
 
         $q->orderBy('bravo_tours.id', 'desc');
 

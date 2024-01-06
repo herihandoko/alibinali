@@ -523,6 +523,7 @@ class UserController extends FrontendController {
         //     $q->where('author_id', $this->currentUser()->id);
         // }
 
+        $q->where('status','publish');
         $q->orderBy('bravo_tours.id', 'desc');
 
         $rows = $q->paginate(10);

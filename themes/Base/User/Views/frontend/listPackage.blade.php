@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                         <div class="d-flex flex-row align-items-center mb-1">
-                            <h4 class="mb-1 me-1">{{ number_format($tour->sale_price,0) }}</h4>
+                            <h4 class="mb-1 me-1">{{ number_format($tour->price,0) }}</h4>
                         </div>
                         <div class="d-flex flex-column mt-4">
                             <a class="btn btn-primary btn-sm" href="{{ url('/tour/'.$tour->slug) }}">Lihat Detail</a>

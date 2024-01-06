@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                         <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                            <img src="url('{{$tour->getBannerImageUrlAttribute('thumb')}}')" width="225" height="150"/>
+                            <img src="{{ $tour->getImageUrl('thumb') }}" width="225" height="150"/>
                             <a href="#!">
                                 <div class="hover-overlay">
                                     <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>

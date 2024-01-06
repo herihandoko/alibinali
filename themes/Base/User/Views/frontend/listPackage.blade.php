@@ -6,13 +6,14 @@
 @include('admin.message')
 <div class="row justify-content-center">
     @foreach($list_paket as $key => $tour)
+    {{-- <?= dd($tour) ?> --}}
     <div class="col-md-12 col-xl-12 mb-2">
         <div class="card shadow-0 border rounded-3">
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                         <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                            <img src="https://storage.googleapis.com/muslimpergi/uploads/listing/pict/3222/medium_dauroh.png" width="225" height="150"/>
+                            <img src="url('{{$tour->getBannerImageUrlAttribute('thumb')}}')" width="225" height="150"/>
                             <a href="#!">
                                 <div class="hover-overlay">
                                     <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -45,7 +46,7 @@
                             <h4 class="mb-1 me-1">{{ number_format($tour->price,0) }}</h4>
                         </div>
                         <div class="d-flex flex-column mt-4">
-                            <a class="btn btn-primary btn-sm" href="{{ url('/tour/'.$tour->slug) }}">Lihat Detail</a>
+                            <a class="btn btn-primary btn-sm" href="{{ url('/tour/'.$tour->slug) }}" target="_blank">Lihat Detail</a>
                             <button class="btn btn-outline-primary btn-sm mt-2" type="button"> Pesan Sekarang </button>
                         </div>
                     </div>

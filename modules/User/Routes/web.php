@@ -32,6 +32,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('/wishlist', 'UserWishListController@index')->name("user.wishList.index");
     Route::get('/wishlist/remove', 'UserWishListController@remove')->name("user.wishList.remove");
 
+    Route::get('/getForProvinsiSelect2', 'UserController@getForProvinsiSelect2')->name("user.getForProvinsiSelect2");
+    Route::get('/getForKabSelect2', 'UserController@getForKabSelect2')->name("user.getForKabSelect2");
+    Route::get('/getForKecSelect2', 'UserController@getForKecSelect2')->name("user.getForKecSelect2");
+
     Route::group(['prefix' => 'verification'], function () {
         Route::match(['get'], '/', 'VerificationController@index')->name("user.verification.index");
         Route::match(['get'], '/update', 'VerificationController@update')->name("user.verification.update");

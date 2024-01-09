@@ -177,7 +177,23 @@ foreach ($menus as $k => $menuItem) {
         <span class="role-name badge badge-success">
             {{ __("Kode Referral:") }}
         </span>
-        <p>{{ isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' }}</p>
+        {{-- <span>{{ isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' }}</span> --}}
+        <div class="col-md-12 mt-2">
+            <input type="text" class="form-control" value="{{ isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' }}" disabled style="text-align: center;" id="input-kode-referal">
+            <div class="row mt-1">
+                <div class="col-md-6 mt-1">
+                    <button class="btn btn-info mr-1 btn-block" type="button" id="button-copy-kode-referal" onclick="copyToClipboard('{!! isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Copy Kode Referal">
+                        <i class="fa fa-copy"></i> Copy
+                    </button>
+                </div>
+                <div class="col-md-6 mt-1">
+                    <button class="btn btn-success btn-block" type="button" id="button-share-kode-referal" onclick="shareToWhatsapp('{!! isset($dataUser->userReferralCode()->referral_code)?url('shared/'.$dataUser->userReferralCode()->referral_code):'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Share Kode Referal">
+                        <i class="fa fa-share"></i> Bagikan
+                    </button>
+                </div>    
+            </div>  
+        </div>
+                   
         @endif
     </div>
     <div class="sidebar-menu">
@@ -220,3 +236,22 @@ foreach ($menus as $k => $menuItem) {
         <a href="{{url('/')}}" style="color: #1ABC9C"><i class="fa fa-long-arrow-left"></i> {{__("Website")}}</a>
     </div>
 </div>
+@push('js')
+<script>
+    function copyToClipboard(params) {
+        var textToCopy = $('input#input-kode-referal').val();
+        navigator.clipboard.writeText(textToCopy).then(function() {
+            $('#button-copy-kode-referal').tooltip('hide')
+            .attr('data-original-title', 'Copied: ' + params)
+            .tooltip('show');
+        }).catch(function(err) {
+            console.error('Unable to copy text', err);
+        });
+    }
+
+    function shareToWhatsapp(params) {
+        var whatsapp_url = "https://wa.me/?text=" + encodeURIComponent(params);
+        window.open(whatsapp_url, '_blank');
+    }
+</script>
+@endpush

@@ -49,7 +49,9 @@ class UserController extends FrontendController {
     public function dashboard(Request $request) {
         $this->checkPermission('dashboard_vendor_access');
         $user_id = Auth::id();
+        $user = Auth::user();
         $data = [
+            'dataUser' => $user,
             'cards_report' => Booking::getTopCardsReportForVendor($user_id),
             'earning_chart_data' => Booking::getEarningChartDataForVendor(strtotime('monday this week'), time(), $user_id),
             'page_title' => __("Agent Dashboard"),

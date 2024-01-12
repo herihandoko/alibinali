@@ -14,6 +14,7 @@ use Modules\User\Models\User;
 use Modules\User\Models\VendorReferral;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Modules\User\Models\Kabupaten;
 use Modules\User\Models\Kecamatan;
 use Modules\User\Models\Provinsi;
@@ -158,7 +159,7 @@ class TeamController extends FrontendController
             'last_edu' => ['required'],
             'job' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', $id > 0 ? Rule::unique('users')->ignore($row->id) : Rule::unique('users')],
-            'phone' => ['required', $id > 0 ? Rule::unique('users')->ignore($row->id) : Rule::unique('users'),new HandphoneRule($request)],
+            'phone' => ['required', $id > 0 ? Rule::unique('users')->ignore($row->id) : Rule::unique('users'), new HandphoneRule($request)],
         ], $messages);
 
         $provinsi = Provinsi::select('name')->where('code', $request->input('provinsi'))->first();
@@ -319,5 +320,14 @@ class TeamController extends FrontendController
             }
         }
         return redirect(route('home'));
+    }
+
+    public function genealogy(): View
+    {
+        $teams = VendorTeam::where('vendor_id', auth()->user()->id)->get();
+        $data = [
+            'teams' => $teams
+        ];
+        return view('Vendor::frontend.team.genealogy', $data);
     }
 }

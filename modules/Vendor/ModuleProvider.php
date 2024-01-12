@@ -101,6 +101,10 @@ class ModuleProvider extends ModuleServiceProvider {
                         'url' => route('vendor.team.index'),
                         'title' => __("Daftar Jamaah"),
                     ],
+                    [
+                        'url' => route('vendor.team.genealogy'),
+                        'title' => __("Genealogy Tree")
+                    ]
                     // [
                     //     'url' => route('tour.vendor.create'),
                     //     'title' => __("Pemesanan Jamaah"),

@@ -24,6 +24,7 @@ Route::group(['prefix'=>'vendor','middleware' => ['auth']],function(){
 
     Route::prefix('team')->name('vendor.team.')->group(function(){
         Route::get('/','TeamController@index')->name("index");
+        Route::get('/genealogy','TeamController@genealogy')->name("genealogy");
         Route::get('/create', 'TeamController@create')->name('create');
         Route::post('/store/{vendorTeam}','TeamController@store')->name("store");
         Route::post('/add','TeamController@add')->name("add");

@@ -19,7 +19,7 @@
     @include('admin.message')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <div class="float-left d-inline">
+            <div class="float-left d-inline mb-2">
                 <a href="{{ route('vendor.team.create') }}" class="btn btn-success btn-sm mt-3">
                     <i class="fa fa-plus"></i> Tambah
                 </a>

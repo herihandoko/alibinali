@@ -55,9 +55,12 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function showRegistrationForm()
+    public function showRegistrationForm($refferal)
     {
-        return view('auth.register',['page_title'=> __("Sign Up")]);
+        return view('auth.register', [
+            'page_title' => __("Sign Up"),
+            'refferal' => isset($refferal) ? $refferal : ''
+        ]);
     }
 
     /**
@@ -72,7 +75,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'status'=>'publish'
+            'status' => 'publish'
         ]);
     }
 }

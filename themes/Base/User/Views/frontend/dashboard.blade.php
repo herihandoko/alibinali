@@ -21,7 +21,7 @@
                                 </button>
                             </div>
                             <div class="col-md-6 mt-1">
-                                <button class="btn btn-success btn-block" type="button" id="button-share-kode-referal-dashboard" onclick="shareToWhatsappDashboard('{!! isset($dataUser->userReferralCode()->referral_code)?url('shared/'.$dataUser->userReferralCode()->referral_code):'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Share Kode Referal">
+                                <button class="btn btn-success btn-block" type="button" id="button-share-kode-referal-dashboard" onclick="shareToWhatsappDashboard('{!! isset($dataUser->userReferralCode()->referral_code)?url('refferal/'.$dataUser->userReferralCode()->referral_code):'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Share Kode Referal">
                                     <i class="fa fa-share"></i> Bagikan
                                 </button>
                             </div>    

@@ -42,7 +42,7 @@
     </div>
     
     <div class="form-group">
-        <input type="text" class="form-control" name="referral_code" autocomplete="off" placeholder="{{__('Kode Referral')}}">
+        <input type="text" class="form-control" name="referral_code" autocomplete="off" placeholder="{{__('Kode Referral')}}" value="{{ $refferal }}">
         <i class="input-icon field-icon icofont-group"></i>
         <span class="invalid-feedback error error-referral_code"></span>
     </div>

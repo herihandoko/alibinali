@@ -84,6 +84,7 @@ Route::post('newsletter/subscribe', 'UserController@subscribe')->name('newslette
 //Custom User  Register
 
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('auth.register');
+Route::get('refferal/{slug}', 'Auth\RegisterController@showRegistrationForm')->name('auth.refferal');
 Route::post('register', 'Auth\RegisterController@register')->name('auth.register.store');
 
 Route::get('/user/my-plan', 'PlanController@myPlan')->name('user.plan')->middleware(['auth', 'verified']);

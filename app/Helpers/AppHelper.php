@@ -4,6 +4,7 @@ use Modules\Core\Models\Settings;
 use App\Currency;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Modules\User\Models\VendorReferral;
 use Modules\Vendor\Models\VendorTeam;
 
 //include '../../custom/Helpers/CustomHelper.php';
@@ -1313,19 +1314,22 @@ function buildTreeTable($parentId = 19, $level = 1)
 {
     $tree = '';
     $teams = VendorTeam::where('vendor_id', $parentId)->get();
-    foreach ($teams as $key => $team) {
-        $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
-        $urlImage = $team->member->getAvatarUrl();
-        if ($imageAvatar) {
-            $urlImage = $imageAvatar;
+    $refferal = VendorReferral::where('user_id', $parentId)->exists();
+    if ($refferal) {
+        foreach ($teams as $key => $team) {
+            $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
+            $urlImage = $team->member->getAvatarUrl();
+            if ($imageAvatar) {
+                $urlImage = $imageAvatar;
+            }
+            $tree .= '<tr>';
+            $tree .= '<th><span class="dot"></span><img src="' . $urlImage . '" class="rounded-circle mr-1 ml-2" width="40" height="40"> ' . $team->member->id . ' . ' . $team->member->display_name ?? '-' . '. Heri Handoko</th>';
+            $tree .= '<td align="right">' . $level . '</td>';
+            $tree .= '<td align="right">Rp 0.00</td>';
+            $tree .= '<td align="right"><span style="color:#ccc !important;">' . $team->membertree->count() . ' Member</span></td>';
+            $tree .= '</tr>';
+            $tree .= buildChild($team->member_id, $level);
         }
-        $tree .= '<tr>';
-        $tree .= '<th><span class="dot"></span><img src="' . $urlImage . '" class="rounded-circle mr-1 ml-2" width="40" height="40"> ' . $team->member->id . ' . ' . $team->member->display_name ?? '-' . '. Heri Handoko</th>';
-        $tree .= '<td align="right">' . $level . '</td>';
-        $tree .= '<td align="right">Rp 0.00</td>';
-        $tree .= '<td align="right"><span style="color:#ccc !important;">' . $team->membertree->count() . ' Member</span></td>';
-        $tree .= '</tr>';
-        $tree .= buildChild($team->member_id, $level);
     }
     return $tree;
 }
@@ -1335,20 +1339,23 @@ function buildChild($parentId, $level)
     $tree = '';
     $level++;
     $teams = VendorTeam::where('vendor_id', $parentId)->get();
-    foreach ($teams as $key => $team) {
-        $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
-        $urlImage = $team->member->getAvatarUrl();
-        if ($imageAvatar) {
-            $urlImage = $imageAvatar;
+    $refferal = VendorReferral::where('user_id', $parentId)->exists();
+    if ($refferal) {
+        foreach ($teams as $key => $team) {
+            $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
+            $urlImage = $team->member->getAvatarUrl();
+            if ($imageAvatar) {
+                $urlImage = $imageAvatar;
+            }
+            $marginLeft = "margin-left: " . (1.5 * $level) . "rem !important;";
+            $tree .= '<tr>';
+            $tree .= '<th><span style="color:#b4b6b7 !important; ' . $marginLeft . '"></span><span class="dot"></span><img src="' . $urlImage . '" class="rounded-circle mr-1 ml-1" width="40" height="40"> '  . $team->member->id . ' . ' .  $team->member->display_name ?? '-' . ' </th>';
+            $tree .= '<td align="right">' . $level . '</td>';
+            $tree .= '<td align="right">Rp 0.00</td>';
+            $tree .= '<td align="right"><span style="color:#ccc !important;">' . $team->membertree->count() . ' Member</span></td>';
+            $tree .= '</tr>';
+            $tree .= buildChild($team->member_id, $level);
         }
-        $marginLeft = "margin-left: " . (1.5 * $level) . "rem !important;";
-        $tree .= '<tr>';
-        $tree .= '<th><span style="color:#b4b6b7 !important; ' . $marginLeft . '"></span><span class="dot"></span><img src="' . $urlImage . '" class="rounded-circle mr-1 ml-1" width="40" height="40"> '  . $team->member->id . ' . ' .  $team->member->display_name ?? '-' . ' </th>';
-        $tree .= '<td align="right">' . $level . '</td>';
-        $tree .= '<td align="right">Rp 0.00</td>';
-        $tree .= '<td align="right"><span style="color:#ccc !important;">' . $team->membertree->count() . ' Member</span></td>';
-        $tree .= '</tr>';
-        $tree .= buildChild($team->member_id, $level);
     }
     return $tree;
 }

@@ -55,6 +55,7 @@ class Tour extends Bookable
         'gallery',
         'video',
         'price',
+        'hpp_price',
         'sale_price',
         //Tour type
         'duration',

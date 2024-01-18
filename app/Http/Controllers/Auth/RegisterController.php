@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Modules\User\Models\VendorReferral;
 
 class RegisterController extends Controller
 {
@@ -55,11 +56,12 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function showRegistrationForm($refferal="")
+    public function showRegistrationForm($refferal = "")
     {
+        $refferalCode = VendorReferral::select('referral_code')->where('referral_code', $refferal)->first();
         return view('auth.register', [
             'page_title' => __("Sign Up"),
-            'refferal' => isset($refferal) ? $refferal : ''
+            'refferal' => isset($refferalCode) ? $refferalCode->referral_code : ''
         ]);
     }
 

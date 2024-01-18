@@ -12,13 +12,17 @@
                 </select>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label">{{__("HPP Price")}}</label>
+            <input type="text" id="hpp_price" name="hpp_price" class="form-control" value="{{$row->hpp_price}}" placeholder="{{__("HPP Price")}}">
+        </div>
     </div>
 </div>
 @push('js')
 <script>
     $('select#cogs_id').change(function (data) {
         var price = $(this).find(':selected').data('harga');
-        $('input#tour_price').val(price);
+        $('input#hpp_price').val(price);
     });
     $('select#cogs_id').select2();
 </script>

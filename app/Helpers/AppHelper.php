@@ -1314,9 +1314,9 @@ function buildTreeTable($parentId = 19, $level = 1)
 {
     $tree = '';
     $teams = VendorTeam::where('vendor_id', $parentId)->get();
-    $refferal = VendorReferral::where('user_id', $parentId)->exists();
-    if ($refferal) {
-        foreach ($teams as $key => $team) {
+    foreach ($teams as $key => $team) {
+        $refferal = VendorReferral::where('user_id', $team->member->id)->exists();
+        if ($refferal) {
             $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
             $urlImage = $team->member->getAvatarUrl();
             if ($imageAvatar) {
@@ -1339,9 +1339,9 @@ function buildChild($parentId, $level)
     $tree = '';
     $level++;
     $teams = VendorTeam::where('vendor_id', $parentId)->get();
-    $refferal = VendorReferral::where('user_id', $parentId)->exists();
-    if ($refferal) {
-        foreach ($teams as $key => $team) {
+    foreach ($teams as $key => $team) {
+        $refferal = VendorReferral::where('user_id', $team->member->id)->exists();
+        if ($refferal) {
             $imageAvatar = get_file_url($team->member->avatar_id, 'thumb');
             $urlImage = $team->member->getAvatarUrl();
             if ($imageAvatar) {

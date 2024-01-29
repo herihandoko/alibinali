@@ -63,6 +63,8 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">No</th>
+                                        <th class="text-center">Nomor Virtual Account</th>
+                                        <th class="text-center">Nama Virtual Account</th>
                                         <th class="text-center">Kode Transaksi</th>
                                         <th class="text-center">Tanggal Pembayaran</th>
                                         <th class="text-center">Nominal (IDR)</th>
@@ -75,6 +77,8 @@
                                         @foreach ($history as $key => $val)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
+                                                <td>{{ $val->va_number }}</td>
+                                                <td>{{ $val->va_name }}</td>
                                                 <td>{{ $val->transaction_code }}</td>
                                                 <td class="text-center">
                                                     {{ date('d M Y', strtotime($val->payment_date)) }}<br>

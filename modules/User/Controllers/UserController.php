@@ -298,8 +298,8 @@ class UserController extends FrontendController
         ]);
         $user = Auth::user();
         $balance = BtnTransaction::select('amount')->where('va_number', $user->va_number)->sum('amount');
-        // $history = BtnTransaction::where('va_number', $user->va_number)->orderBy('payment_date', 'desc')->get();
-        $history = BtnTransaction::orderBy('payment_date', 'desc')->get();
+        $history = BtnTransaction::where('va_number', $user->va_number)->orderBy('payment_date', 'desc')->get();
+        // $history = BtnTransaction::orderBy('payment_date', 'desc')->get();
         $data = [
             'dataUser' => $user,
             'history' => $history,

@@ -16,7 +16,7 @@ $menus = [
     ],
     "virtual-account" => [
         'url' => route("user.virtual_account"),
-        'title' => __("Virtual Account"),
+        'title' => __("Tabungan Jamaah"),
         'icon' => 'fa fa-money',
         'position' => 21
     ],
@@ -165,14 +165,21 @@ foreach ($menus as $k => $menuItem) {
     </div>
     <div class="user-profile-avatar">
         <div class="info-new">
-            <span class="role-name badge badge-info">{{$dataUser->role_name}}</span>
+            <span class="role-name badge badge-info">
+                @if($dataUser->role_name == 'Vendor')
+                    Mitra
+                @else
+                    {{ $dataUser->role_name }}  
+                @endif      
+            </span>
             <h5>{{$dataUser->getDisplayName()}}</h5>
             <p>{{ __("Terdaftar Sejak :time",["time"=> date("d M Y",strtotime($dataUser->created_at))]) }}</p>
         </div>
     </div>
     <div class="user-profile-plan">
         @if( !Auth::user()->hasPermission("dashboard_vendor_access") and setting_item('vendor_enable'))
-        <a href=" {{ route("user.upgrade_vendor") }}">{{ __("Jadi Agent") }}</a>
+        {{-- <a href=" {{ route("user.upgrade_vendor") }}">{{ __("Jadi Mitra") }}</a> --}}
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">{{ __("Jadi Mitra") }}</button>
         @else
         <span class="role-name badge badge-success">
             {{ __("Kode Referral:") }}
@@ -236,6 +243,27 @@ foreach ($menus as $k => $menuItem) {
         <a href="{{url('/')}}" style="color: #1ABC9C"><i class="fa fa-long-arrow-left"></i> {{__("Website")}}</a>
     </div>
 </div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black;">Perjanjian Kerja Sama</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <embed src="{{ url('uploads/pks.pdf') }}" frameborder="0" width="100%" height="400px">
+                    <p style="color: black" class="mt-3">
+                        <input type="checkbox" name="agree" id="chk-agree" onchange="showButtonTNC()"> Saya telah membaca dan menyetujui syarat dan ketentuan.
+                    </p>    
+              </div>
+              <div class="modal-footer">
+                <a href="{{ route("user.upgrade_vendor") }}" id="btn-pks-agree" class="btn btn-primary w-100 disabled">{{ __("Saya Setuju") }}</a>
+              </div>
+        </div>
+    </div>
+</div>
 @push('js')
 <script>
     function copyToClipboard(params) {
@@ -252,6 +280,14 @@ foreach ($menus as $k => $menuItem) {
     function shareToWhatsapp(params) {
         var whatsapp_url = "https://wa.me/?text=" + encodeURIComponent(params);
         window.open(whatsapp_url, '_blank');
+    }
+
+    function showButtonTNC(){
+        if($('input#chk-agree').is(":checked")){
+            $('#btn-pks-agree').attr('class','btn btn-success w-100');
+        }else{
+            $('#btn-pks-agree').attr('class','btn btn-primary w-100 disabled');
+        }
     }
 </script>
 @endpush

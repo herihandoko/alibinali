@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-2 text-right">
             {{-- <a href="{{ route('vendor.team.create') }}" class="btn btn-success btn-sm mt-3">
-                <i class="fa fa-plus"></i> {{ __('Invite Member') }}
+                <i class="fa fa-plus"></i> {{ __('Tambah Jamaah') }}
             </a> --}}
         </div>
     </div>

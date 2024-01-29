@@ -45,7 +45,8 @@ class GenerateReport extends Command
         $trxDate = $this->argument('trxdate');
         // $response = $this->mokeupReport();
         if (!$trxDate)
-            $trxDate = date('Y-m-d', strtotime("-1 days"));
+            $trxDate = "";
+        // $trxDate = date('Y-m-d', strtotime("-1 days"));
 
         /** report va btn */
         $partnerServiceId = env('BTN_API_PARTNER_SERVICE_ID');
@@ -93,22 +94,24 @@ class GenerateReport extends Command
             $hasilVA = $hasil['virtualAccountData'];
             $reportVa = [];
             foreach ($hasilVA as $key => $value) {
-                $reportVa[] = [
-                    'va_number' => $value['virtualAccountNo'],
-                    'va_name' => $value['virtualAccountName'],
-                    'teller' => $value['teller'],
-                    'transaction_code' => $value['transactionCode'],
-                    'sequence' => $value['sequence'],
-                    'payment_date' => $value['paymentDate'],
-                    'amount' => $value['amount'],
-                    'reversal_flag' => $value['reversalFlag'],
-                    'reversal_sequence' => $value['reversalSequence'],
-                    'reversal_tme' => $value['reversalTime'],
-                    'total_amount' => $value['totalAmount'],
-                    'total_paid' => $value['totalPaid'],
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'transaction_date' => $trxDate,
-                ];
+                if (!BtnTransaction::where('sequence', $value['sequence'])->where('va_number', $value['virtualAccountNo'])->exists()) {
+                    $reportVa[] = [
+                        'va_number' => $value['virtualAccountNo'],
+                        'va_name' => $value['virtualAccountName'],
+                        'teller' => $value['teller'],
+                        'transaction_code' => $value['transactionCode'],
+                        'sequence' => $value['sequence'],
+                        'payment_date' => $value['paymentDate'],
+                        'amount' => $value['amount'],
+                        'reversal_flag' => $value['reversalFlag'],
+                        'reversal_sequence' => $value['reversalSequence'],
+                        'reversal_tme' => $value['reversalTime'],
+                        'total_amount' => $value['totalAmount'],
+                        'total_paid' => $value['totalPaid'],
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'transaction_date' => $trxDate,
+                    ];
+                }
             }
             if ($reportVa) {
                 BtnTransaction::where('transaction_date', $trxDate)->delete();

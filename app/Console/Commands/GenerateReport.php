@@ -114,7 +114,7 @@ class GenerateReport extends Command
                 }
             }
             if ($reportVa) {
-                BtnTransaction::where('transaction_date', $trxDate)->delete();
+                // BtnTransaction::where('transaction_date', $trxDate)->delete();
                 BtnTransaction::insert($reportVa);
             }
         }

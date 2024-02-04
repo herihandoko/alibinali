@@ -45,4 +45,10 @@ return [
         ],
     ],
 
+    'whatsapp' => [
+        'token' => env('WHATSAPP_TOKEN'),
+        'base_url' =>  env('WHATSAPP_BASE_URL'),
+        'number' =>  env('WHATSAPP_NUMBER'),
+    ]
+
 ];

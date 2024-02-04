@@ -35,11 +35,11 @@
         </div>
     </div>
     
-    <div class="form-group">
+    {{-- <div class="form-group">
         <input type="password" class="form-control" name="password" autocomplete="off" placeholder="{{__('Password')}}">
         <i class="input-icon field-icon icofont-ui-password"></i>
         <span class="invalid-feedback error error-password"></span>
-    </div>
+    </div> --}}
     
     <div class="form-group">
         <input type="text" class="form-control" name="referral_code" autocomplete="off" placeholder="{{__('Kode Referral')}}" value="{{ @$refferal }}">

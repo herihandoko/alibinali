@@ -3,14 +3,14 @@
     <div class="form-row">
         <div class="col-lg-6 col-md-12">
             <div class="form-group">
-                <input type="text" class="form-control" name="first_name" autocomplete="off" placeholder="{{__("Nama Depan")}}">
+                <input type="text" class="form-control" name="first_name" autocomplete="off" placeholder="{{__("John")}}">
                 <i class="input-icon field-icon icofont-waiter-alt"></i>
                 <span class="invalid-feedback error error-first_name"></span>
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
             <div class="form-group">
-                <input type="text" class="form-control" name="last_name" autocomplete="off" placeholder="{{__("Nama Belakang")}}">
+                <input type="text" class="form-control" name="last_name" autocomplete="off" placeholder="{{__("Doe")}}">
                 <i class="input-icon field-icon icofont-waiter-alt"></i>
                 <span class="invalid-feedback error error-last_name"></span>
             </div>
@@ -20,7 +20,7 @@
     <div class="form-row">
         <div class="col-lg-6 col-md-12">
             <div class="form-group">
-                <input type="text" class="form-control" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" placeholder="{{__('Nomor Telp. Aktif')}}">
+                <input type="text" class="form-control" name="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" placeholder="{{__('08xxxx')}}">
                 <i class="input-icon field-icon icofont-ui-touch-phone"></i>
                 <span class="invalid-feedback error error-phone"></span>
             </div>
@@ -28,7 +28,7 @@
         
         <div class="col-lg-6 col-md-12">
             <div class="form-group">
-                <input type="email" class="form-control" name="email" autocomplete="off" placeholder="{{__('Alamat Email Aktif')}}">
+                <input type="email" class="form-control" name="email" autocomplete="off" placeholder="{{__('user@travel.com')}}">
                 <i class="input-icon field-icon icofont-mail"></i>
                 <span class="invalid-feedback error error-email"></span>
             </div>

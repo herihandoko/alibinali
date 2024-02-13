@@ -15,6 +15,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('/booking-history', 'UserController@bookingHistory')->name("user.booking_history");
     Route::get('/virtual-account', 'UserController@virtualAccount')->name("user.virtual_account");
     Route::get('/list-package', 'UserController@listPackage')->name("user.list_package");
+    Route::get('/{service_id}/addToCart', 'UserController@addToCart')->name("user.addToCart");
 
     Route::get('/member', 'UserController@memberList')->name("user.member.list");
     Route::get('/member/create', 'UserController@create')->name('user.member.create');

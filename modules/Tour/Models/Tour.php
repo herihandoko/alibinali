@@ -372,7 +372,8 @@ class Tour extends Bookable
         $booking->object_id = $request->input('service_id');
         $booking->object_model = $request->input('service_type');
         $booking->vendor_id = $this->author_id;
-        $booking->customer_id = Auth::id();
+        // $booking->customer_id = Auth::id();
+        $booking->customer_id = isset($request->customer_id) ? $request->customer_id : Auth::id();
         $booking->total = $total;
         $booking->total_guests = $total_guests;
         $booking->start_date = $start_date->format('Y-m-d H:i:s');
@@ -384,6 +385,7 @@ class Tour extends Bookable
         $booking->buyer_fees = $list_buyer_fees ?? '';
         $booking->total_before_fees = $total_before_fees;
         $booking->total_before_discount = $total_before_fees;
+        $booking->booking_by = isset($request->booking_by) ? $request->booking_by : 'user';
 
         if ($this->isFixedDate()) {
             $booking->start_date = $this->start_date;
@@ -1243,7 +1245,8 @@ class Tour extends Bookable
         return false;
     }
 
-    function berangkat() : HasOne {
-        return $this->hasOne(TourDate::class,'target_id','id');
+    function berangkat(): HasOne
+    {
+        return $this->hasOne(TourDate::class, 'target_id', 'id');
     }
 }

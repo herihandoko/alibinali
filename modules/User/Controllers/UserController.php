@@ -31,10 +31,13 @@ use Modules\User\Models\VendorReferral;
 use \App\Traits\ApiTrait;
 use App\Rules\VirtualAccountRule;
 use App\Rules\HandphoneRule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Artisan;
 use Modules\User\Models\Kabupaten;
 use Modules\User\Models\Kecamatan;
 use Modules\User\Models\Provinsi;
+use Illuminate\Support\Carbon;
+use Modules\Vendor\Models\VendorTeam;
 
 class UserController extends FrontendController
 {
@@ -553,6 +556,13 @@ class UserController extends FrontendController
     public function listPackage(Request $request): View
     {
         $user = Auth::user();
+        $memberId = '';
+        if (isset($request->member_id)) {
+            $team = VendorTeam::where('vendor_id', $user->id)->where('member_id', $request->member_id)->exists();
+            if ($team)
+                $memberId = $request->member_id;
+        }
+
         $q = $this->tourClass::query();
 
         if ($request->query('s')) {
@@ -581,6 +591,7 @@ class UserController extends FrontendController
 
         $data = [
             'dataUser' => $user,
+            'memberId' => $memberId,
             'page_title' => __("Virtual Account"),
             'breadcrumbs' => [
                 [
@@ -696,5 +707,46 @@ class UserController extends FrontendController
         return $this->sendSuccess([
             'results' => $res
         ]);
+    }
+
+    public function addToCart(Request $request): RedirectResponse
+    {
+        $tourDate = '';
+        if ($request->service_id) {
+            $q = $this->tourClass::find($request->service_id);
+            $dt = new Carbon();
+            $tourDate = isset($q->berangkat->start_date) ? $dt->parse($q->berangkat->start_date)->format('Y-m-d') : '';
+        }
+        $request->merge([
+            'service_id' =>  isset($q->id) ? $q->id : '',
+            'service_type' => 'tour',
+            'start_date' => $tourDate,
+            'person_types' => '',
+            'guests' => '1',
+            'customer_id' => isset($request->member_id) ? $request->member_id : auth()->user()->id,
+            'booking_by' => isset($request->member_id) ? 'mitra' : 'user'
+        ]);
+        $validator = Validator::make($request->all(), [
+            'service_id'   => 'required|integer',
+            'start_date' => 'required|date_format:Y-m-d',
+            'service_type' => 'required',
+            'guests' => 'required|integer|min:1|max:1'
+        ]);
+        if ($validator->fails()) {
+            return back()->with('error', __('Error pilih paket, silahkan hubungi admin kami. Terima kasih.'));
+        }
+        $service_type = $request->input('service_type');
+        $service_id = $request->input('service_id');
+        $allServices = get_bookable_services();
+        if (empty($allServices[$service_type])) {
+            return $this->sendError(__('Service type not found'));
+        }
+        $module = $allServices[$service_type];
+        $service = $module::find($service_id);
+        $bookData = $service->addToCart($request)->getData();
+        if (!$bookData)
+            return back()->with('error', __('Booking paket gagal, silahkan hubungi admin kami. Terima kasih.'));
+        $booking = Booking::where('code', $bookData->booking_code)->first();
+        return redirect($booking->getCheckoutUrl());
     }
 }

@@ -11,6 +11,12 @@
             padding: 8px 20px;
             transition: background .2s,color .2s
         }
+
+        .bootstrap-table .fixed-table-container .fixed-table-body {
+            overflow-x: auto;
+            overflow-y: auto;
+            min-height: 200px !important;
+        }
     </style>
     
     <h2 class="title-bar no-border-bottom">
@@ -31,6 +37,7 @@
                         <th data-field="name" data-sortable="true">{{__("Nama")}}</th>
                         <th data-field="email" data-sortable="true">{{__("Alamat Email")}}</th>
                         <th data-field="phone" data-sortable="true">{{__("No. Telpon")}}</th>
+                        <th data-field="phone" data-sortable="true">{{ __('Virtual Account') }}</th>
                         <th data-field="created_at" data-sortable="true">{{__("Tgl Pendaftaran")}}</th>
                         <th data-field="status" data-sortable="true">{{__("Status")}}</th>
                         <th data-sortable="true">{{__("Aksi")}}</th>
@@ -50,6 +57,9 @@
                             <td>
                                 {{ $vendorTeam->member->phone?? '-' }}
                             </td>
+                            <td>
+                                {{ $vendorTeam->member->va_number ?? '-' }}
+                            </td>
                             <td style="text-align: center;">
                                 @if($vendorTeam->member->created_at)
                                     {!! date('d-m-Y H:i:s', strtotime($vendorTeam->member->created_at)) !!}
@@ -64,10 +74,11 @@
                             </td>
                             <td style="text-align: center;">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-danger btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                         {{__("Aksi")}}
                                     </button>
                                     <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ route('user.list_package', ['member_id' => $vendorTeam->member->id]) }}">{{ __('Pilih Paket') }}</a>
                                         <a class="dropdown-item" href="{{route('vendor.team.edit',['vendorTeam'=>$vendorTeam])}}">{{__("Ubah")}}</a>
                                         @if($vendorTeam->status == Modules\Vendor\Models\VendorTeam::STATUS_PENDING)
                                             <a class="dropdown-item" href="{{route('vendor.team.re-send-request',['vendorTeam'=>$vendorTeam])}}">{{__("Send email")}}</a>

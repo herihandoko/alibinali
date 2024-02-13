@@ -18,9 +18,12 @@ use Illuminate\View\View;
 use Modules\User\Models\Kabupaten;
 use Modules\User\Models\Kecamatan;
 use Modules\User\Models\Provinsi;
+use \App\Traits\ApiTrait;
+use Illuminate\Support\Str;
 
 class TeamController extends FrontendController
 {
+    use ApiTrait;
 
     public function index_()
     {
@@ -221,6 +224,7 @@ class TeamController extends FrontendController
         $rowSave = $row->save();
 
         if ($rowSave == true and $id == 0) {
+            $this->prepareVa($row);
             $vendorReferral = VendorReferral::where('user_id', Auth::id())->first();
             $updVendorReferral = VendorReferral::find($vendorReferral->id);
             $updVendorReferral->update([
@@ -329,5 +333,84 @@ class TeamController extends FrontendController
             'teams' => $teams
         ];
         return view('Vendor::frontend.team.genealogy', $data);
+    }
+
+    public function prepareVa($user)
+    {
+        if ($user->phone) {
+            if (!$user->va_number) {
+                $customerNumber = $user->phone;
+                if (strlen($user->phone) < 13) {
+                    $customerNumber = str_pad($user->phone, 13, "0", STR_PAD_LEFT);
+                }
+                $partnerServiceId = env('BTN_API_PARTNER_SERVICE_ID');
+                $trxId = date('YmdHi') . str_pad($user->id, 7, "0", STR_PAD_LEFT);
+                $xTimeStamp = date('c');
+
+                /** begin prepare akses token */
+                $bodyRequestAT = [
+                    'grantType' => "client_credentials",
+                    'additionalInfo' => []
+                ];
+                $responseAT = $this->aksesToken([
+                    'timestamp' => $xTimeStamp,
+                    'signature' => $this->signatureAccessToken($xTimeStamp),
+                    'body_request' => $bodyRequestAT
+                ]);
+                $responseAccToken = $responseAT->object();
+                $accessToken = $responseAccToken->accessToken;
+                /** end prepare akses token */
+                /** prepare create VA */
+                $bodyRequestCVA = [
+                    "partnerServiceId" => $partnerServiceId,
+                    "customerNo" => $customerNumber,
+                    "virtualAccountNo" => $partnerServiceId . $customerNumber,
+                    "virtualAccountName" => substr(strtoupper($user->name), 0, 40),
+                    "trxId" => $trxId,
+                    "totalAmount" => ["value" => "0.00", "currency" => "IDR"],
+                    "virtualAccountTrxType" => "P",
+                    "expiredDate" => "",
+                    "additionalInfo" => [
+                        "description" => "PEMBAYARAN JAMAAH BARU",
+                        "payment" => "VA JAMAAH BARU",
+                        "paymentCode" => substr(str_shuffle("0123456789"), 0, 5),
+                        "currentAccountNo" => ""
+                    ],
+                ];
+                //            dd($bodyRequestCVA);
+                $minifyBody = json_encode($bodyRequestCVA);
+                $shaBody = hash('sha256', $minifyBody);
+                $stringToSign = 'POST' . ":" . "/snap/v1/transfer-va/create-va" . ":" . $accessToken . ":" . $shaBody . ":" . $xTimeStamp;
+                $xClientSecret = env('BTN_API_SECRET_KEY');
+                $signatureVa = hash_hmac(
+                    'sha512',
+                    $stringToSign,
+                    $xClientSecret,
+                    true
+                );
+
+                $va['token'] = $accessToken;
+                $va['timestamp'] = $xTimeStamp;
+                $va['signature'] = base64_encode($signatureVa);
+                $va['external_id'] = strtoupper(Str::random(16));
+                $va['channel_id'] = substr(str_shuffle("0123456789"), 0, 5);
+                $va['body_request'] = $bodyRequestCVA;
+                $response = $this->createVA($va);
+                $hasil = json_decode($response, true);
+                if (isset($hasil['responseCode'])) {
+                    if ($hasil['responseCode'] == '2002700') {
+                        $user->va_number = $partnerServiceId . $customerNumber;
+                        $user->va_name = substr(strtoupper($user->name), 0, 40);
+                        $user->customer_number = $customerNumber;
+                        $user->va_status = '2002700';
+                        $user->status_profile = 1;
+                    } else {
+                        return redirect()->back()->with('error', $hasil['responseMessage']);
+                    }
+                }
+                $user->response_va = $response;
+            }
+            $user->save();
+        }
     }
 }

@@ -36,7 +36,7 @@
                     <li>
                         <div class="label">{{__('Durasi Paket:')}}</div>
                         <div class="val">
-                            {{human_day_diff($booking->end_date,$booking->start_date)}}
+                            {{human_day_diff($booking->start_date,$booking->end_date)}}
                         </div>
                     </li>
                 @endif

@@ -4,6 +4,33 @@
         {{__("Dashboard")}}
     </h2>
     @include('admin.message')
+    @if(isset($dataUser->userReferralCode()->referral_code))
+        <div class="bravo-user-chart">
+            <div class="chart-title text-center" style="margin-bottom: 0px !important;">
+                {{__("Kode Referral")}}
+            </div>
+            <p class="text-center">Bagikan kode referralmu dan dapatkan penawaran menarik</p>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 mt-2">
+                        <input type="text" class="form-control" value="{{ isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' }}" disabled style="text-align: center;" id="input-kode-referal-dashboard">
+                        <div class="row mt-1">
+                            <div class="col-md-6 mt-1">
+                                <button class="btn btn-info mr-1 btn-block" type="button" id="button-copy-kode-referal-dashboard" onclick="copyToClipboardDashboard('{!! isset($dataUser->userReferralCode()->referral_code)?$dataUser->userReferralCode()->referral_code:'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Copy Kode Referal">
+                                    <i class="fa fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <div class="col-md-6 mt-1">
+                                <button class="btn btn-success btn-block" type="button" id="button-share-kode-referal-dashboard" onclick="shareToWhatsappDashboard('{!! isset($dataUser->userReferralCode()->referral_code)?url('refferal/'.$dataUser->userReferralCode()->referral_code):'-' !!}')" data-toggle="tooltip" data-placement="bottom" title="Share Kode Referal">
+                                    <i class="fa fa-share"></i> Bagikan
+                                </button>
+                            </div>    
+                        </div>  
+                    </div> 
+                </div>
+            </div> 
+        </div>
+    @endif
     <div class="bravo-user-dashboard">
         <div class="row dashboard-price-info row-eq-height">
             @if(!empty($cards_report))
@@ -139,5 +166,20 @@
             });
             cb(start, end);
         });
+        function copyToClipboardDashboard(params) {
+            var textToCopy = $('input#input-kode-referal-dashboard').val();
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                $('#button-copy-kode-referal-dashboard').tooltip('hide')
+                .attr('data-original-title', 'Copied: ' + params)
+                .tooltip('show');
+            }).catch(function(err) {
+                console.error('Unable to copy text', err);
+            });
+        }
+
+        function shareToWhatsappDashboard(params) {
+            var whatsapp_url = "https://wa.me/?text=" + encodeURIComponent(params);
+            window.open(whatsapp_url, '_blank');
+        }
     </script>
 @endpush

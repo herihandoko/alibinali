@@ -218,14 +218,14 @@
 </div>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115740936-4"></script>
+{{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115740936-4"></script>
 <script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
 
 	gtag('config', 'UA-115740936-4');
-</script>
+</script> --}}
 <script src="{{url('landing')}}/js/jquery.min.js"></script>
 <script src="{{url('landing')}}/js/bootstrap.min.js"></script>
 <script src="{{url('landing')}}/owlcarousel/owl.carousel.min.js"></script>

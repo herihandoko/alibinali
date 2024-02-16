@@ -4,7 +4,8 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class HandphoneRule implements Rule {
+class HandphoneRule implements Rule
+{
 
     /**
      * Create a new rule instance.
@@ -13,7 +14,8 @@ class HandphoneRule implements Rule {
      */
     protected $request;
 
-    public function __construct($request) {
+    public function __construct($request)
+    {
         //
         $this->request = $request;
     }
@@ -25,10 +27,13 @@ class HandphoneRule implements Rule {
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value = '') {
+    public function passes($attribute, $value = '')
+    {
         if ($value) {
-            if (substr($value, 0, 2) == '62')
+            if (strlen($value) <= 13)
                 return true;
+            // if (substr($value, 0, 2) == '62')
+            //     return true;
         }
         return false;
     }
@@ -38,7 +43,9 @@ class HandphoneRule implements Rule {
      *
      * @return string
      */
-    public function message() {
-        return 'No telepon harus ber awalan 62.';
+    public function message()
+    {
+        // return 'No telepon harus ber awalan 62.';
+        return 'No telepon tidak boleh lebih dari 13 karakter';
     }
 }

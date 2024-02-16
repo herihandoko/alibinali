@@ -3,6 +3,7 @@
 namespace Modules\User\Controllers\Auth;
 
 use App\Helpers\ReCaptchaEngine;
+use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +14,16 @@ use Illuminate\Support\MessageBag;
 use Illuminate\Validation\Rules\Password;
 use Matrix\Exception;
 use Modules\User\Events\SendMailUserRegistered;
+use Modules\User\Events\SendWhatsAppUserRegistered;
 use Modules\User\Models\VendorReferral;
 use Modules\Vendor\Models\VendorTeam;
 
-class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
+class RegisterController extends \App\Http\Controllers\Auth\RegisterController
+{
 
     public function register(Request $request)
     {
-        if(!is_enable_registration()){
+        if (!is_enable_registration()) {
             return $this->sendError(__("Anda sudah terdaftar!"));
         }
 
@@ -42,16 +45,16 @@ class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
                 'max:255',
                 'unique:users'
             ],
-            'password'   => [
-                'required',
-                'string',
-                Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
-            ],
-            'phone'       => ['required','unique:users'],
+            // 'password'   => [
+            //     'required',
+            //     'string',
+            //     Password::min(8)
+            //         ->mixedCase()
+            //         ->numbers()
+            //         ->symbols()
+            //         ->uncompromised(),
+            // ],
+            'phone'       => ['required', 'unique:users'],
             'term'       => ['required'],
         ];
 
@@ -61,7 +64,7 @@ class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
             'email.required'      => __('Alamat Email wajib diisi'),
             'email.email'         => __('Alamat Email tidak valid'),
             'email.unique'      => __('Alamat Email sudah terdaftar'),
-            'password.required'   => __('Password wajib diisi'),
+            // 'password.required'   => __('Password wajib diisi'),
             'first_name.required' => __('Nama Depan wajib diisi'),
             'last_name.required'  => __('Nama Belakang wajib diisi'),
             'term.required'       => __('Syarat dan Kebijakan Privasi belum tercentang'),
@@ -86,31 +89,35 @@ class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
                 'messages' => $validator->errors()
             ], 200);
         } else {
-            if(!empty($request->input('referral_code'))) {
+            $password = generatePassword(6);
+            if (!empty($request->input('referral_code'))) {
                 $referralCode = VendorReferral::where('referral_code', $request->input('referral_code'))->first();
-                if(empty($referralCode)) {
+                if (empty($referralCode)) {
                     $errorRef = new MessageBag(['referral_code' => __('Kode Referral tidak ada')]);
                     return response()->json([
                         'error'    => true,
                         'messages' => $errorRef
                     ], 200);
                 } else {
+                    $level = User::find($referralCode->user_id);
                     $user = \App\User::create([
                         'first_name' => $request->input('first_name'),
                         'last_name'  => $request->input('last_name'),
                         'email'      => $request->input('email'),
-                        'password'   => Hash::make($request->input('password')),
-                        'status'    => $request->input('publish','publish'),
+                        'password'   => Hash::make($password),
+                        'status'    => $request->input('publish', 'publish'),
                         'phone'    => $request->input('phone'),
+                        'pass_code' => $password,
+                        'level_mitra' => $level->level_mitra + 1
                     ]);
-                    
-                    if($user->id != 0) {
+
+                    if ($user->id != 0) {
                         $vendorReferral = VendorReferral::find($referralCode->id);
                         $vendorReferral->update([
                             'referral_count' => $vendorReferral->referral_count + 1,
                             'points' => $vendorReferral->points + 1,
                         ]);
-                        
+
                         $saveVendorMember = new VendorTeam();
                         $saveVendorMember->vendor_id = $vendorReferral->user_id;
                         $saveVendorMember->member_id = $user->id;
@@ -123,7 +130,8 @@ class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
                     Auth::loginUsingId($user->id);
 
                     try {
-                        event(new SendMailUserRegistered($user));
+                        // event(new SendMailUserRegistered($user));
+                        event(new SendWhatsAppUserRegistered($user));
                     } catch (Exception $exception) {
                         Log::warning("SendMailUserRegistered: " . $exception->getMessage());
                     }
@@ -140,16 +148,19 @@ class RegisterController extends \App\Http\Controllers\Auth\RegisterController {
                     'first_name' => $request->input('first_name'),
                     'last_name'  => $request->input('last_name'),
                     'email'      => $request->input('email'),
-                    'password'   => Hash::make($request->input('password')),
-                    'status'    => $request->input('publish','publish'),
+                    'password'   => Hash::make($password),
+                    'status'    => $request->input('publish', 'publish'),
                     'phone'    => $request->input('phone'),
+                    'pass_code' => $password,
+                    'level_mitra' => 0
                 ]);
 
                 event(new Registered($user));
                 Auth::loginUsingId($user->id);
 
                 try {
-                    event(new SendMailUserRegistered($user));
+                    // event(new SendMailUserRegistered($user));
+                    event(new SendWhatsAppUserRegistered($user));
                 } catch (Exception $exception) {
 
                     Log::warning("SendMailUserRegistered: " . $exception->getMessage());

@@ -26,3 +26,4 @@ storage/bc.php
 storage/installed
 public/themes/*/dist
 cogs
+storage/*

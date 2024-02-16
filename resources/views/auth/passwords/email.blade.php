@@ -11,6 +11,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    {{-- <div class="alert alert-info text-center" role="alert">Instruksi untuk reset password akan dikirim ke Nomor Whatsapp Anda.</div> --}}
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
                         <div class="form-group row">
@@ -27,7 +28,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
+                                    {{ __('Kirim Reset Password') }}
                                 </button>
                             </div>
                         </div>

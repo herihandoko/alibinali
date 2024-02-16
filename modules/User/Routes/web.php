@@ -15,6 +15,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::get('/booking-history', 'UserController@bookingHistory')->name("user.booking_history");
     Route::get('/virtual-account', 'UserController@virtualAccount')->name("user.virtual_account");
     Route::get('/list-package', 'UserController@listPackage')->name("user.list_package");
+    Route::get('/{service_id}/addToCart', 'UserController@addToCart')->name("user.addToCart");
 
     Route::get('/member', 'UserController@memberList')->name("user.member.list");
     Route::get('/member/create', 'UserController@create')->name('user.member.create');
@@ -31,6 +32,10 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'verified']], functio
     Route::post('/wishlist', 'UserWishListController@handleWishList')->name("user.wishList.handle");
     Route::get('/wishlist', 'UserWishListController@index')->name("user.wishList.index");
     Route::get('/wishlist/remove', 'UserWishListController@remove')->name("user.wishList.remove");
+
+    Route::get('/getForProvinsiSelect2', 'UserController@getForProvinsiSelect2')->name("user.getForProvinsiSelect2");
+    Route::get('/getForKabSelect2', 'UserController@getForKabSelect2')->name("user.getForKabSelect2");
+    Route::get('/getForKecSelect2', 'UserController@getForKecSelect2')->name("user.getForKecSelect2");
 
     Route::group(['prefix' => 'verification'], function () {
         Route::match(['get'], '/', 'VerificationController@index')->name("user.verification.index");
@@ -80,6 +85,7 @@ Route::post('newsletter/subscribe', 'UserController@subscribe')->name('newslette
 //Custom User  Register
 
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('auth.register');
+Route::get('refferal/{slug}', 'Auth\RegisterController@showRegistrationForm')->name('auth.refferal');
 Route::post('register', 'Auth\RegisterController@register')->name('auth.register.store');
 
 Route::get('/user/my-plan', 'PlanController@myPlan')->name('user.plan')->middleware(['auth', 'verified']);

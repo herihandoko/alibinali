@@ -715,14 +715,13 @@ class UserController extends FrontendController
         if ($request->service_id) {
             $q = $this->tourClass::find($request->service_id);
             $dt = new Carbon();
-            $tourDate = isset($q->berangkat->start_date) ? $dt->parse($q->berangkat->start_date)->format('Y-m-d') : '';
+            $tourDate = isset($q->start_date) ? $dt->parse($q->start_date)->format('Y-m-d') : '';
         }
         $request->merge([
             'service_id' =>  isset($q->id) ? $q->id : '',
             'service_type' => 'tour',
             'start_date' => $tourDate,
-            'person_types' => '',
-            'guests' => '1',
+            'guests' => "1",
             'customer_id' => isset($request->member_id) ? $request->member_id : auth()->user()->id,
             'booking_by' => isset($request->member_id) ? 'mitra' : 'user'
         ]);

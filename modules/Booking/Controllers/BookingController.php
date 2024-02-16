@@ -463,6 +463,7 @@ class BookingController extends \App\Http\Controllers\Controller
      */
     public function addToCart(Request $request)
     {
+        dd($request);
         if (!is_enable_guest_checkout() and !Auth::check()) {
             return $this->sendError(__("You have to login in to do this"))->setStatusCode(401);
         }

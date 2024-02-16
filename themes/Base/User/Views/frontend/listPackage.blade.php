@@ -37,7 +37,7 @@
                                 </p>
                                 <p class="mb-3"><i class="simple-icon-calendar mr-1"></i>
                                     Keberangkatan: <span
-                                        class="text-primary font-weight-bold ml-1">{{ isset($tour->berangkat->start_date) ? date('d M Y', strtotime($tour->berangkat->start_date)) : '-' }}</span>
+                                        class="text-primary font-weight-bold ml-1">{{ isset($tour->start_date) ? date('d M Y', strtotime($tour->start_date)) : '-' }}</span>
                                 </p>
                                 </p>
                             </div>

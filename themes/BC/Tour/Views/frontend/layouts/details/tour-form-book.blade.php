@@ -30,15 +30,15 @@
                     <div class="form-group form-date-field form-date-search clearfix " data-format="{{get_moment_date_format()}}">
                         <div class="d-flex p-2  flex-wrap clearfix text-center" v-if="is_fixed_date">
                             <div class="w-50 py-3 flex-grow-1">
-                                <div class="font-weight-bold">{{__("Tour Start Date")}}</div>
+                                <div class="font-weight-bold">{{__("Tanggal Keberangkatan")}}</div>
                                 <span>@{{ start_date_html }}</span>
                             </div>
                             <div class="w-50 py-3 flex-grow-1 border-left">
-                                <div class="font-weight-bold">{{__("Tour End Date")}}</div>
+                                <div class="font-weight-bold">{{__("Tanggal Kepulangan")}}</div>
                                 <span>@{{ end_date_html }}</span>
                             </div>
                             <div class="w-100 py-3 flex-grow-1 border-top">
-                                <div class="font-weight-bold">{{__("Last Booking Date")}}</div>
+                                <div class="font-weight-bold">{{__("Terakhir Pemesanan")}}</div>
                                 <span>@{{ last_booking_date_html }}</span>
                             </div>
                         </div>

@@ -1371,3 +1371,16 @@ function generatePassword($length = 6)
 
     return $password;
 }
+
+function human_day_diff($startDate, $endDate)
+{
+    // Membuat objek DateTime dari string tanggal
+    $awal = new DateTime($startDate);
+    $akhir = new DateTime($endDate);
+
+    // Menghitung selisih antara dua tanggal
+    $selisih = $awal->diff($akhir);
+
+    // Mengembalikan jumlah hari sebagai integer
+    return $selisih->days . ' Hari';
+}

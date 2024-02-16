@@ -46,11 +46,12 @@
                                     <h4 class="mb-1 me-1">{{ number_format($tour->price, 0) }}</h4>
                                 </div>
                                 <div class="d-flex flex-column mt-4">
-                                    <a class="btn btn-primary btn-sm" href="{{ url('/tour/' . $tour->slug) }}"
-                                        target="_blank">Lihat Detail</a>
-                                    <a class="btn btn-outline-primary btn-sm mt-2"
-                                        href="{{ route('user.addToCart', ['service_id' => $tour->id, 'member_id' => $memberId]) }}">
-                                        Pesan Sekarang</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ url('/tour/' . $tour->slug) }}" target="_blank">Lihat Detail</a>
+                                    @if($memberId)
+                                    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ route('user.addToCart', ['service_id' => $tour->id, 'member_id' => $memberId]) }}"> Pesan Sekarang</a>
+                                    @else
+                                    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ route('user.addToCart', ['service_id' => $tour->id]) }}"> Pesan Sekarang</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

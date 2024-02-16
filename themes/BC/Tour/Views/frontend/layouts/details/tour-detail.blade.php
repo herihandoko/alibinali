@@ -36,7 +36,7 @@
                         <i class="icofont-wall-clock"></i>
                     </div>
                     <div class="info">
-                        <h4 class="name">{{__("Duration")}}</h4>
+                        <h4 class="name">{{__("Durasi Paket")}}</h4>
                         <p class="value">
                             {{duration_format($row->duration,true)}}
                         </p>
@@ -87,7 +87,7 @@
                         <i class="icofont-island-alt"></i>
                     </div>
                     <div class="info">
-                        <h4 class="name">{{__("Location")}}</h4>
+                        <h4 class="name">{{__("Berangkat Dari")}}</h4>
                         <p class="value">
                             {{$location->name ?? ''}}
                         </p>

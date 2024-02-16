@@ -28,7 +28,7 @@
             <ul class="review-list">
                 @if($booking->start_date)
                     <li>
-                        <div class="label">{{__('Start date:')}}</div>
+                        <div class="label">{{__('Keberangkatan:')}}</div>
                         <div class="val">
                             {{display_date($booking->start_date)}}
                         </div>
@@ -36,7 +36,7 @@
                     <li>
                         <div class="label">{{__('Duration:')}}</div>
                         <div class="val">
-                            {{human_time_diff($booking->end_date,$booking->start_date)}}
+                            {{human_time_diff_short($booking->end_date,$booking->start_date)}}
                         </div>
                     </li>
                 @endif

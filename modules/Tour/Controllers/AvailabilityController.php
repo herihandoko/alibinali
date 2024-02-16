@@ -245,7 +245,11 @@ class AvailabilityController extends FrontendController
                             $allDates[date('Y-m-d', $i)]['title'] = __('Full Book');
                             $allDates[date('Y-m-d', $i)]['classNames'] = ['full-book-event'];
                         } else {
-                            $c_title = $allDates[date('Y-m-d', $i)]['title_origin'] . "<br>". __('Max guests: ').( $max_guests - $total_guests_booking );
+                            if(isset($allDates[date('Y-m-d', $i)]['title_origin'])){
+                                $c_title = $allDates[date('Y-m-d', $i)]['title_origin'] . "<br>". __('Max guests: ').( $max_guests - $total_guests_booking );
+                            }else{
+                                $c_title = $allDates[date('Y-m-d', $i)]['title'] . "<br>". __('Max guests: ').( $max_guests - $total_guests_booking );
+                            }
                             $allDates[date('Y-m-d', $i)]['title']  = $c_title;
                         }
                     }

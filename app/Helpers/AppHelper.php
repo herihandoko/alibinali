@@ -1054,16 +1054,16 @@ function duration_format($hour, $is_full = false)
         $tmp = [];
         if ($day) {
             if ($day > 1) {
-                $tmp[] = __(':count Days', ['count' => $day]);
+                $tmp[] = __(':count Hari', ['count' => $day]);
             } else {
-                $tmp[] = __(':count Day', ['count' => $day]);
+                $tmp[] = __(':count Hari', ['count' => $day]);
             }
         }
         if ($hour) {
             if ($hour > 1) {
-                $tmp[] = __(':count Hours', ['count' => $hour]);
+                $tmp[] = __(':count Jam', ['count' => $hour]);
             } else {
-                $tmp[] = __(':count Hour', ['count' => $hour]);
+                $tmp[] = __(':count Jam', ['count' => $hour]);
             }
         }
 

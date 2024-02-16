@@ -52,7 +52,7 @@
                     @endforeach
                 @else
                     <li>
-                        <div class="label">{{__("Guests")}}:</div>
+                        <div class="label">{{__("Jamaah")}}:</div>
                         <div class="val">
                             {{$booking->total_guests}}
                         </div>
@@ -76,7 +76,7 @@
                     @endforeach
                 @else
                     <li>
-                        <div class="label">{{__("Guests")}}: {{$booking->total_guests}} * {{format_money($booking->getMeta('base_price'))}}</div>
+                        <div class="label">{{__("Jamaah")}}: {{$booking->total_guests}} * {{format_money($booking->getMeta('base_price'))}}</div>
                         <div class="val">
                             {{format_money($booking->getMeta('base_price') * $booking->total_guests)}}
                         </div>

@@ -27,3 +27,5 @@ storage/installed
 public/themes/*/dist
 cogs
 storage/*
+dev/
+error_log
